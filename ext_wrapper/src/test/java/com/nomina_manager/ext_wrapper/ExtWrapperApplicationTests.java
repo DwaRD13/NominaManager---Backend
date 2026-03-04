@@ -1,13 +1,13 @@
-package com.procode.nomina_manager;
+package com.nomina_manager.ext_wrapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class NominaManagerApplicationTests {
+class ExtWrapperApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
