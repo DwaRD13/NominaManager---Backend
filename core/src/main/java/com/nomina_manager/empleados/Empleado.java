@@ -1,5 +1,7 @@
 package com.nomina_manager.empleados;
 
+import com.nomina_manager.helpers.ColumnName;
+import com.nomina_manager.helpers.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,36 +9,36 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "empleado")
 @Data
+@Table(name = TableName.EMPLEADO)
 public class Empleado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = ColumnName.ID)
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(name = ColumnName.NOMBRE)
     private String nombre;
 
-    @Column(name = "cedula")
+    @Column(name = ColumnName.CEDULA)
     private String cedula;
 
-    @Column(name = "departamento")
+    @Column(name = ColumnName.DEPARTAMENTO)
     private String departamento;
 
-    @Column(name = "puesto")
+    @Column(name = ColumnName.PUESTO)
     private String puesto;
 
-    @Column(name = "salario_mensual")
+    @Column(name = ColumnName.SALARIO_MENSUAL)
     private BigDecimal salarioMensual;
 
-    @Column(name = "id_nomina")
+    @Column(name = ColumnName.ID_NOMINA)
     private Long idNomina;
 
-    @Column(name = "estado")
-    private Boolean estado;
+    @Column(name = ColumnName.ESTADO)
+    private String estado;
 
-    @Column(name = "fecha_creacion")
+    @Column(name = ColumnName.FECHA_CREACION)
     private LocalDateTime fechaCreacion;
 }
