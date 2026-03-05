@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/tiposingresos")
+@RequestMapping("/v1/tipos-ingresos")
 @AllArgsConstructor
 public class TiposIngresosController {
     public TiposIngresosService service;
