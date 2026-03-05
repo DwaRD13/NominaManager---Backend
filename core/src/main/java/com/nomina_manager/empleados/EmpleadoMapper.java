@@ -2,7 +2,7 @@ package com.nomina_manager.empleados;
 
 public class EmpleadoMapper {
 
-    public static EmpleadoDTO mapToDTO(Empleado empleado) {
+    public EmpleadoDTO mapToDTO(Empleado empleado) {
         EmpleadoDTO empleadoDTO = new EmpleadoDTO();
         empleadoDTO.setNombre(empleadoDTO.getNombre());
         empleadoDTO.setCedula(empleadoDTO.getCedula());
@@ -15,8 +15,9 @@ public class EmpleadoMapper {
         return empleadoDTO;
     }
 
-    public static Empleado mapFromDTO(EmpleadoDTO empleadoDTO) {
+    public Empleado mapFromDTO(EmpleadoDTO empleadoDTO) {
         Empleado empleado = new Empleado();
+        empleado.setId(empleadoDTO.getId());
         empleado.setNombre(empleadoDTO.getNombre());
         empleado.setCedula(empleadoDTO.getCedula());
         empleado.setSalarioMensual(empleadoDTO.getSalarioMensual());
