@@ -11,5 +11,5 @@ public class ColumnName {
     public final static String ID_NOMINA = "id_nomina";
     public final static String ESTADO = "estado";
     public final static String FECHA_CREACION = "fecha_creacion";
-
+    public final static String DEPENDE_DE_SALARIO = "depende_de_salario";
 }
