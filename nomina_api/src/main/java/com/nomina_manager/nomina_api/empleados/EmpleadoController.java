@@ -45,5 +45,4 @@ public class EmpleadoController {
     public ResponseEntity<String> eliminarEmpleado (@PathVariable Long id){
         return new ResponseEntity<>(service.eliminarEmpleado(id), HttpStatus.OK);
     }
-
 }
