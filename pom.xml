@@ -26,7 +26,6 @@
     <modules>
         <module>core</module>
         <module>nomina_api</module>
-        <module>ext_wrapper</module>
     </modules>
 
 </project>
