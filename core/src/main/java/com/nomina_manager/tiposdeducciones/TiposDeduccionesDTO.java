@@ -8,4 +8,5 @@ public class TiposDeduccionesDTO {
     private String nombre;
     private boolean dependeDeSalario;
     private String estado;
+    private Double porcentaje;
 }

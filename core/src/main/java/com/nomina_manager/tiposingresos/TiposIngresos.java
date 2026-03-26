@@ -6,9 +6,6 @@ import com.nomina_manager.helpers.TableName;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @Entity
 @Data
 @Table(name = TableName.TIPO_INGRESOS)
@@ -26,4 +23,7 @@ public class TiposIngresos {
 
     @Column(name = ColumnName.ESTADO)
     private String estado;
+
+    @Column(name = ColumnName.PORCENTAJE)
+    private Double porcentaje;
 }

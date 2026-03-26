@@ -23,4 +23,6 @@ public class TiposDeducciones {
     @Column(name = ColumnName.ESTADO)
     private String estado;
 
+    @Column(name = ColumnName.PORCENTAJE)
+    private Double porcentaje;
 }
