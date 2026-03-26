@@ -8,6 +8,7 @@ public class TiposIngresosMapper {
         dto.setNombre(entity.getNombre());
         dto.setDependeDeSalario(entity.isDependeDeSalario());
         dto.setEstado(entity.getEstado());
+        dto.setPorcentaje(entity.getPorcentaje());
         return dto;
     }
 
@@ -17,6 +18,7 @@ public class TiposIngresosMapper {
         entity.setNombre(dto.getNombre());
         entity.setDependeDeSalario(dto.isDependeDeSalario());
         entity.setEstado(dto.getEstado());
+        entity.setPorcentaje(dto.getPorcentaje());
         return entity;
     }
 

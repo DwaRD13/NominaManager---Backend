@@ -14,6 +14,7 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 public class TiposIngresosServiceImp implements TiposIngresosService {
+
     private final TiposIngresosRepository repository;
     private final TiposIngresosMapper mapper = new TiposIngresosMapper();
 
@@ -49,7 +50,6 @@ public class TiposIngresosServiceImp implements TiposIngresosService {
 
     @Override
     public TiposIngresos crearTipoDeIngreso(TiposIngresosDTO dto) {
-
 
         TiposIngresos existente = repository.buscarPorNombre(dto.getNombre());
         if (existente != null) {
