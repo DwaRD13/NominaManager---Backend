@@ -79,6 +79,7 @@ public class TiposDeduccionesServiceImp implements TiposDeduccionesService {
 
         existente.setNombre(dto.getNombre());
         existente.setDependeDeSalario(dto.isDependeDeSalario());
+        existente.setPorcentaje(dto.getPorcentaje());
 
         if (dto.getEstado() != null && !dto.getEstado().isBlank()) {
             existente.setEstado(dto.getEstado());
