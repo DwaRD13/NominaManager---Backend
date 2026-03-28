@@ -37,9 +37,7 @@ public class RegistroTransaccionServiceImp implements RegistroTransaccionService
 
     @Override
     public List<RegistroTransaccion> encontrarTodosActivos() {
-        return repository.findAll().stream()
-                .filter(rt -> ESTADO_ACTIVO.equals(rt.getEstado()))
-                .toList();
+        return repository.encontrarTodosActivos();
     }
 
     @Override
@@ -140,39 +138,50 @@ public class RegistroTransaccionServiceImp implements RegistroTransaccionService
             entity.setFecha(dto.getFecha());
         }
 
-        // Obtener datos actualizados del tipo
+        // Determinar el tipo de transaccion y sus datos (del DTO o del entity)
+        String tipoTransaccion;
         boolean dependeDeSalario;
         Double porcentaje;
         
-        if (entity.getTipoDeIngreso() != null) {
-            dependeDeSalario = entity.getTipoDeIngreso().isDependeDeSalario();
-            porcentaje = entity.getTipoDeIngreso().getPorcentaje();
-        } else if (entity.getTipoDeDeduccion() != null) {
-            dependeDeSalario = entity.getTipoDeDeduccion().isDependeDeSalario();
-            porcentaje = entity.getTipoDeDeduccion().getPorcentaje();
-        } else {
-            dependeDeSalario = false;
-            porcentaje = null;
-        }
-
-        // Recalcular monto
-        BigDecimal montoCalculado = calcularMonto(dto.getMonto(), dependeDeSalario, porcentaje, entity.getEmpleado());
-        entity.setMonto(montoCalculado);
-
-        // Actualizar tipo si se proporciona
+        // Usar los NUEVOS datos del DTO si se proporcionan, sino usar los del entity
         if (dto.getTipoDeIngresoId() != null) {
             TiposIngresos tipoIngreso = tiposIngresosRepository.findById(dto.getTipoDeIngresoId())
                     .orElseThrow(() -> new DoNotExistException("Tipo de ingreso no encontrado con ID: " + dto.getTipoDeIngresoId()));
             entity.setTipoDeIngreso(tipoIngreso);
             entity.setTipoDeDeduccion(null);
-            entity.setTipoTransaccion(tipoIngreso.getNombre());
+            tipoTransaccion = tipoIngreso.getNombre();
+            dependeDeSalario = tipoIngreso.isDependeDeSalario();
+            porcentaje = tipoIngreso.getPorcentaje();
         } else if (dto.getTipoDeDeduccionId() != null) {
             TiposDeducciones tipoDeduccion = tiposDeduccionesRepository.findById(dto.getTipoDeDeduccionId())
                     .orElseThrow(() -> new DoNotExistException("Tipo de deduccion no encontrado con ID: " + dto.getTipoDeDeduccionId()));
             entity.setTipoDeDeduccion(tipoDeduccion);
             entity.setTipoDeIngreso(null);
-            entity.setTipoTransaccion(tipoDeduccion.getNombre());
+            tipoTransaccion = tipoDeduccion.getNombre();
+            dependeDeSalario = tipoDeduccion.isDependeDeSalario();
+            porcentaje = tipoDeduccion.getPorcentaje();
+        } else {
+            // Si no se proporciona nuevo tipo, usar los del entity actual
+            if (entity.getTipoDeIngreso() != null) {
+                tipoTransaccion = entity.getTipoDeIngreso().getNombre();
+                dependeDeSalario = entity.getTipoDeIngreso().isDependeDeSalario();
+                porcentaje = entity.getTipoDeIngreso().getPorcentaje();
+            } else if (entity.getTipoDeDeduccion() != null) {
+                tipoTransaccion = entity.getTipoDeDeduccion().getNombre();
+                dependeDeSalario = entity.getTipoDeDeduccion().isDependeDeSalario();
+                porcentaje = entity.getTipoDeDeduccion().getPorcentaje();
+            } else {
+                tipoTransaccion = null;
+                dependeDeSalario = false;
+                porcentaje = null;
+            }
         }
+        
+        entity.setTipoTransaccion(tipoTransaccion);
+
+        // Calcular monto con los datos correctos (del nuevo tipo)
+        BigDecimal montoCalculado = calcularMonto(dto.getMonto(), dependeDeSalario, porcentaje, entity.getEmpleado());
+        entity.setMonto(montoCalculado);
 
         return repository.save(entity);
     }
