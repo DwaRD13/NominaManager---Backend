@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["maven", "openjdk21"]
+
+[phases.build]
+cmds = ["mvn clean package -DskipTests"]
+
+[start]
+cmd = "java -Dserver.port=$PORT $JAVA_OPTS -jar nomina_api/target/*.jar"
