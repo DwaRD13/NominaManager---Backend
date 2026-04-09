@@ -13,7 +13,11 @@ public class ColumnName {
     public final static String FECHA_CREACION = "fecha_creacion";
     public final static String DEPENDE_DE_SALARIO = "depende_de_salario";
     public final static String PORCENTAJE = "porcentaje";
-    
+    public final static String DESCRIPCION = "descripcion";
+    public final static String FECHA_ASIENTO = "fecha_asiento";
+    public final static String MONTO_TOTAL = "monto_total";
+    public final static String ID_ASIENTO_CONTABLE = "id_asiento_contable";
+
     // Tabla registro_transaccion
     public final static String EMPLEADO_ID = "empleado_id";
     public final static String TIPO_DE_DEDUCCION_ID = "tipo_de_deduccion_id";
