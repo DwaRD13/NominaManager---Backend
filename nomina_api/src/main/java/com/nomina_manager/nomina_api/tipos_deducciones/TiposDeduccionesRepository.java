@@ -25,4 +25,8 @@ public interface TiposDeduccionesRepository extends JpaRepository<TiposDeduccion
     @Transactional
     @Query("UPDATE TiposDeducciones t SET t.estado = 'Eliminado' WHERE t.id = :id")
     void deleteTiposDeDeduccionById(@Param("id") Long id);
+
+
+    @Query("SELECT t FROM TiposDeducciones t WHERE t.dependeDeSalario = true AND t.estado = 'Activo'")
+    List<TiposDeducciones> encontrarSiDependeDeSalarioYEsActivo();
 }

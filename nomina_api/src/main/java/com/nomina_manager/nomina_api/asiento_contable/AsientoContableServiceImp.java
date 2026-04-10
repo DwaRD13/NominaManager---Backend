@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +21,7 @@ public class AsientoContableServiceImp implements AsientoContableService {
 
     public AsientoContableServiceImp(WebClient.Builder webClientBuilder, AsientoContableRepository repository,
                                      RegistroTransaccionRepository registroTransaccionRepository) {
-        this.webClient = webClientBuilder.baseUrl("http://151.242.194.24").build();
+        this.webClient = webClientBuilder.baseUrl("http://151.242.194.24:8080/").build();
         this.repository = repository;
         this.registroTransaccionRepository = registroTransaccionRepository;
     }
@@ -52,7 +51,6 @@ public class AsientoContableServiceImp implements AsientoContableService {
 
     @Override
     public AsientoContable crearAsientoContable(Moneda moneda, LocalDate fechaInicio, LocalDate fechaFin, String descripcion){
-
         AsientoContableDTO dto = new AsientoContableDTO();
         dto.setMoneda(moneda);
         dto.setDescripcion(descripcion);
@@ -64,19 +62,55 @@ public class AsientoContableServiceImp implements AsientoContableService {
 
         // Buscar transacciones
         List<RegistroTransaccion> registroTransacciones = registroTransaccionRepository.consultarTransaccionesPorFecha(fechaInicio, fechaFin);
+        List<CuentaContable> cuentaContables = this.webClient.get().uri("api/cuentas-contables").retrieve().
+                bodyToFlux(CuentaContable.class).
+                collectList().
+                block();
 
-        double montoDebito;
-        double montoCredito;
+        double montoDebito = 0;
+        double montoCredito = 0;
 
-        for(RegistroTransaccion registroTransaccion : registroTransacciones){
-            if(Objects.nonNull(registroTransaccion.getTipoDeDeduccion())){
+        for(RegistroTransaccion registroTransaccion : registroTransacciones) {
+            if (Objects.nonNull(registroTransaccion.getTipoDeDeduccion())) {
                 montoCredito = registroTransaccion.getMonto().doubleValue();
-            }else{
+            } else {
                 montoDebito = registroTransaccion.getMonto().doubleValue();
+            }
         }
 
+        if(montoCredito > montoDebito){
+            montoDebito = montoCredito;
+        } else{
+            montoCredito = montoDebito;
+        }
+
+        CuentaContable cuentaDebito = new CuentaContable();
+        cuentaDebito.setTipoMovimiento("Debito");
+        cuentaDebito.setMonto(montoDebito);
+
+        CuentaContable cuentaCredito = new CuentaContable();
+        cuentaCredito.setTipoMovimiento("Credito");
+        cuentaCredito.setMonto(montoCredito);
+
+        Cuenta cuentaAuxDeb = new Cuenta();
 
 
-        return as;
+        cuentaDebito.setCuenta(cuentaAuxDeb);
+
+
+        Cuenta cuentaAuxCred = new Cuenta();
+
+
+        cuentaDebito.setCuenta(cuentaAuxCred);
+
+
+        System.out.println("Monto debito: " + montoDebito);
+        System.out.println("Monto credito: " + montoCredito);
+        System.out.println("Cuentas contable: " + cuentaContables);
+
+
+        return null;
     }
+
+
 }

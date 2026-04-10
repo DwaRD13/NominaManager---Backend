@@ -8,6 +8,8 @@ import java.util.List;
 public interface EmpleadoService {
 
     public List<Empleado> encontrarTodosActivos();
+    public List<Empleado> encontrarTodosActivosMenosTodos();
+
     public Empleado encontrarPorId(Long id);
     public Empleado encontrarPorNombre(String nombre);
     public Empleado crearEmpleado(EmpleadoDTO dto);

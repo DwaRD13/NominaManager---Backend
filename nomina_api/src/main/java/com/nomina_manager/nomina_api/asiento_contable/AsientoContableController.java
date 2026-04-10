@@ -29,9 +29,9 @@ public class AsientoContableController {
 
     @PostMapping
     public ResponseEntity<AsientoContable> crearAsientoContable(@RequestBody Moneda moneda,
-                                                                      @RequestParam LocalDate fechaInicio,
-                                                                      @RequestParam LocalDate fechaFin,
-                                                                      @RequestParam(name = "descripcion") String descripcion){
+                                                                @RequestParam LocalDate fechaInicio,
+                                                                @RequestParam LocalDate fechaFin,
+                                                                @RequestParam(name = "descripcion") String descripcion){
         return new ResponseEntity<>(asientoContableService.crearAsientoContable(moneda, fechaInicio, fechaFin, descripcion), HttpStatus.OK);
     }
 

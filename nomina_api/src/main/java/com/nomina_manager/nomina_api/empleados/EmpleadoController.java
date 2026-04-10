@@ -21,6 +21,12 @@ public class EmpleadoController {
         return new ResponseEntity<>(service.encontrarTodosActivos(), HttpStatus.OK);
     }
 
+    @GetMapping("/less_todos")
+    public ResponseEntity<List<Empleado>> getEmpleadosMenosTodos(){
+        return new ResponseEntity<>(service.encontrarTodosActivosMenosTodos(), HttpStatus.OK);
+    }
+
+
     @GetMapping("/id/{id}")
     public ResponseEntity<Empleado> getEmpleadoPorId (@PathVariable Long id){
         return new ResponseEntity<>(service.encontrarPorId(id), HttpStatus.OK);
