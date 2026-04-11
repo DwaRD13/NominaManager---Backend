@@ -1,10 +1,10 @@
-package com.nomina_manager.nomina_api.tiposingresos;
+package com.nomina_manager.nomina_api.tipos_ingresos;
 
 import com.nomina_manager.exception.DoNotExistException;
 import com.nomina_manager.exception.ExistObjectException;
-import com.nomina_manager.tiposingresos.TiposIngresos;
-import com.nomina_manager.tiposingresos.TiposIngresosDTO;
-import com.nomina_manager.tiposingresos.TiposIngresosMapper;
+import com.nomina_manager.tipos_ingresos.TiposIngresos;
+import com.nomina_manager.tipos_ingresos.TiposIngresosDTO;
+import com.nomina_manager.tipos_ingresos.TiposIngresosMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

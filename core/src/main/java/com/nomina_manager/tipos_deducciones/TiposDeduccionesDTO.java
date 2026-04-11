@@ -1,4 +1,4 @@
-package com.nomina_manager.tiposdeducciones;
+package com.nomina_manager.tipos_deducciones;
 
 import lombok.Data;
 

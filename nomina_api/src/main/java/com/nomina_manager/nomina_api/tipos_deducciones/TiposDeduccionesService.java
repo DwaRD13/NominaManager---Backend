@@ -1,7 +1,7 @@
-package com.nomina_manager.nomina_api.tiposdeducciones;
+package com.nomina_manager.nomina_api.tipos_deducciones;
 
-import com.nomina_manager.tiposdeducciones.TiposDeducciones;
-import com.nomina_manager.tiposdeducciones.TiposDeduccionesDTO;
+import com.nomina_manager.tipos_deducciones.TiposDeducciones;
+import com.nomina_manager.tipos_deducciones.TiposDeduccionesDTO;
 
 import java.util.List;
 

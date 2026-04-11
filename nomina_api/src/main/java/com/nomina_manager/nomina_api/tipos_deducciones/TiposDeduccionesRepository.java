@@ -1,6 +1,6 @@
-package com.nomina_manager.nomina_api.tiposdeducciones;
+package com.nomina_manager.nomina_api.tipos_deducciones;
 
-import com.nomina_manager.tiposdeducciones.TiposDeducciones;
+import com.nomina_manager.tipos_deducciones.TiposDeducciones;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,4 +25,8 @@ public interface TiposDeduccionesRepository extends JpaRepository<TiposDeduccion
     @Transactional
     @Query("UPDATE TiposDeducciones t SET t.estado = 'Eliminado' WHERE t.id = :id")
     void deleteTiposDeDeduccionById(@Param("id") Long id);
+
+
+    @Query("SELECT t FROM TiposDeducciones t WHERE t.dependeDeSalario = true AND t.estado = 'Activo'")
+    List<TiposDeducciones> encontrarSiDependeDeSalarioYEsActivo();
 }

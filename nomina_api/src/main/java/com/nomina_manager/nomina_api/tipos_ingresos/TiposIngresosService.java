@@ -1,9 +1,7 @@
-package com.nomina_manager.nomina_api.tiposingresos;
+package com.nomina_manager.nomina_api.tipos_ingresos;
 
-import com.nomina_manager.empleados.Empleado;
-import com.nomina_manager.empleados.EmpleadoDTO;
-import com.nomina_manager.tiposingresos.TiposIngresos;
-import com.nomina_manager.tiposingresos.TiposIngresosDTO;
+import com.nomina_manager.tipos_ingresos.TiposIngresos;
+import com.nomina_manager.tipos_ingresos.TiposIngresosDTO;
 
 import java.util.List;
 

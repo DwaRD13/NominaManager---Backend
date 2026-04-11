@@ -1,10 +1,10 @@
-package com.nomina_manager.nomina_api.tiposdeducciones;
+package com.nomina_manager.nomina_api.tipos_deducciones;
 
 import com.nomina_manager.exception.DoNotExistException;
 import com.nomina_manager.exception.ExistObjectException;
-import com.nomina_manager.tiposdeducciones.TiposDeducciones;
-import com.nomina_manager.tiposdeducciones.TiposDeduccionesDTO;
-import com.nomina_manager.tiposdeducciones.TiposDeduccionesMapper;
+import com.nomina_manager.tipos_deducciones.TiposDeducciones;
+import com.nomina_manager.tipos_deducciones.TiposDeduccionesDTO;
+import com.nomina_manager.tipos_deducciones.TiposDeduccionesMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

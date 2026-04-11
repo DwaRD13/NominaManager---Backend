@@ -1,4 +1,4 @@
-package com.nomina_manager.tiposingresos;
+package com.nomina_manager.tipos_ingresos;
 
 import lombok.Data;
 

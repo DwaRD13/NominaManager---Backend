@@ -1,8 +1,9 @@
-package com.nomina_manager.tiposdeducciones;
+package com.nomina_manager.tipos_ingresos;
 
-public class TiposDeduccionesMapper {
-    public TiposDeduccionesDTO mapToDTO(TiposDeducciones entity) {
-        TiposDeduccionesDTO dto = new TiposDeduccionesDTO();
+
+public class TiposIngresosMapper {
+    public TiposIngresosDTO mapToDTO(TiposIngresos entity) {
+        TiposIngresosDTO dto = new TiposIngresosDTO();
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
         dto.setDependeDeSalario(entity.isDependeDeSalario());
@@ -11,8 +12,8 @@ public class TiposDeduccionesMapper {
         return dto;
     }
 
-    public TiposDeducciones mapFromDTO(TiposDeduccionesDTO dto) {
-        TiposDeducciones entity = new TiposDeducciones();
+    public TiposIngresos mapFromDTO(TiposIngresosDTO dto) {
+        TiposIngresos entity = new TiposIngresos();
         entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());
         entity.setDependeDeSalario(dto.isDependeDeSalario());
@@ -20,4 +21,5 @@ public class TiposDeduccionesMapper {
         entity.setPorcentaje(dto.getPorcentaje());
         return entity;
     }
+
 }

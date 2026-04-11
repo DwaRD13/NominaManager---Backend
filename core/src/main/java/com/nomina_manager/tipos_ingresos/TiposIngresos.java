@@ -1,4 +1,5 @@
-package com.nomina_manager.tiposdeducciones;
+package com.nomina_manager.tipos_ingresos;
+
 
 import com.nomina_manager.helpers.ColumnName;
 import com.nomina_manager.helpers.TableName;
@@ -7,8 +8,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = TableName.TIPO_DEDUCCIONES)
-public class TiposDeducciones {
+@Table(name = TableName.TIPO_INGRESOS)
+public class TiposIngresos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = ColumnName.ID)
