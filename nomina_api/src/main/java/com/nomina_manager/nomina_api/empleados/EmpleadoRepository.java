@@ -17,6 +17,10 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
     @Query(value = "SELECT e FROM Empleado e WHERE e.estado = 'Activo' ")
     List<Empleado> encontrarTodosActivos();
 
+    @Query(value = "SELECT e FROM Empleado e WHERE e.estado = 'Activo' " +
+            "AND e.nombre != 'Todos'")
+    List<Empleado> encontrarTodosActivosMenosGeneral();
+
     @Query(value = "SELECT e FROM Empleado e WHERE e.nombre = :nombre")
     Empleado buscarPorNombre(@Param("nombre") String nombre);
 

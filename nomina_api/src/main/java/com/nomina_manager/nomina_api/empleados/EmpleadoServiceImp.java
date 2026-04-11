@@ -29,6 +29,16 @@ public class EmpleadoServiceImp implements EmpleadoService{
     }
 
     @Override
+    public List<Empleado> encontrarTodosActivosMenosTodos() {
+        List<Empleado> empleados = repository.encontrarTodosActivosMenosGeneral();
+
+        if(empleados.isEmpty()){
+            throw new DoNotExistException("No se encontraron empleados activos");
+        }
+        return empleados;
+    }
+
+    @Override
     public Empleado encontrarPorId(Long id) {
         Empleado empleado = repository.buscarPorId(id);
 
