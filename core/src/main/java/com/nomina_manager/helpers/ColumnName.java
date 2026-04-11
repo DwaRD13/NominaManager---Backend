@@ -17,6 +17,7 @@ public class ColumnName {
     public final static String FECHA_ASIENTO = "fecha_asiento";
     public final static String MONTO_TOTAL = "monto_total";
     public final static String ID_ASIENTO_CONTABLE = "id_asiento_contable";
+    public final static String ID_ASIENTO = "id_asiento";
 
     // Tabla registro_transaccion
     public final static String EMPLEADO_ID = "empleado_id";

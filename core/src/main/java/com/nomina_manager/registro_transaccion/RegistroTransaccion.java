@@ -48,4 +48,7 @@ public class RegistroTransaccion {
 
     @Column(name = ColumnName.FECHA_CREACION)
     private LocalDateTime fechaCreacion;
+
+    @Column(name = ColumnName.ID_ASIENTO)
+    private Long idAsiento;
 }
