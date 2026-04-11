@@ -23,9 +23,22 @@ public class AsientoContable {
     @Column(name = ColumnName.FECHA_ASIENTO, columnDefinition = "DATETIME")
     private LocalDate fechaAsiento;
 
-    @Column(name = ColumnName.MONTO_TOTAL)
-    private Double montoTotal;
+    @Column(name = ColumnName.MONTO_TOTAL_DOP)
+    private Double montoTotalDop;
 
     @Column(name = ColumnName.ESTADO)
     private Boolean estado;
+
+    @Column(name = ColumnName.MONTO_TOTAL_TRANSACCION)
+    private Double montoTotalTransaccion;
+
+    @Column(name = ColumnName.MONEDA)
+    private String moneda;
+
+    @Column(name = ColumnName.FECHA_INICIO)
+    private LocalDate fechaInicio;
+
+    @Column(name = ColumnName.FECHA_FIN)
+    private LocalDate fechaFin;
+
 }

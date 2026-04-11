@@ -15,9 +15,12 @@ public class ColumnName {
     public final static String PORCENTAJE = "porcentaje";
     public final static String DESCRIPCION = "descripcion";
     public final static String FECHA_ASIENTO = "fecha_asiento";
-    public final static String MONTO_TOTAL = "monto_total";
-    public final static String ID_ASIENTO_CONTABLE = "id_asiento_contable";
+    public final static String MONTO_TOTAL_DOP = "monto_total_dop"; // DOP
     public final static String ID_ASIENTO = "id_asiento";
+    public final static String MONTO_TOTAL_TRANSACCION = "monto_total_transaccion";
+    public final static String MONEDA = "moneda";
+    public final static String FECHA_INICIO = "fecha_inicio";
+    public final static String FECHA_FIN= "fecha_fin";
 
     // Tabla registro_transaccion
     public final static String EMPLEADO_ID = "empleado_id";

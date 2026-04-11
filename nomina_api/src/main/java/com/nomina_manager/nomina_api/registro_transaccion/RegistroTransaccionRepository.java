@@ -11,7 +11,7 @@ import java.util.List;
 public interface RegistroTransaccionRepository extends JpaRepository<RegistroTransaccion, Long> {
 
     @Query("SELECT r FROM RegistroTransaccion r WHERE r.estado = '1' " +
-            "ORDER BY r.fecha DESC")
+            "ORDER BY r.fechaCreacion DESC")
     List<RegistroTransaccion> encontrarTodosActivos();
     
     List<RegistroTransaccion> findByEmpleadoIdAndEstado(Long empleadoId, String estado);

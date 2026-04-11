@@ -11,8 +11,13 @@ public class AsientoContableDTO {
     private Long id;
     private String descripcion;
     private LocalDate fechaAsiento;
-    private Double montoTotal;
+    private Double montoTotalDop;
     private Boolean estado;
+    private String moneda;
+    private Double montoTotalTransaccion;
+
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
 
     List<RegistroTransaccion> registroTransaccion;
 }
