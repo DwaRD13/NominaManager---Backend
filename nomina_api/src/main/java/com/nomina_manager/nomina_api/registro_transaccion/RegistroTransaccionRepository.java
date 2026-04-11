@@ -32,10 +32,15 @@ public interface RegistroTransaccionRepository extends JpaRepository<RegistroTra
     @Query("SELECT r FROM RegistroTransaccion r WHERE " +
             "r.estado = '1' AND" +
             "(cast(:fechaInicio as date) IS NULL OR r.fecha >= :fechaInicio) AND " +
-            "(cast(:fechaFin as date) IS NULL OR r.fecha <= :fechaFin) " +
+            "(cast(:fechaFin as date) IS NULL OR r.fecha <= :fechaFin) AND " +
+            "r.idAsiento IS NULL " +
             "ORDER BY r.fecha ASC")
-    List<RegistroTransaccion> consultarTransaccionesPorFecha(
+    List<RegistroTransaccion> consultarTransaccionesPorFechaSinAsientoContable(
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin
     );
+
+    @Query("SELECT r FROM RegistroTransaccion r WHERE r.idAsiento = :idAsiento " +
+            "ORDER BY r.fecha DESC")
+    List<RegistroTransaccion> encontrarPorIdAsiento(Long idAsiento);
 }

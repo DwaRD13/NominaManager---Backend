@@ -13,4 +13,5 @@ public class RegistroTransaccionDTO {
     private Long tipoDeIngresoId;
     private LocalDate fecha;
     private BigDecimal monto;
+    private Long idAsientoContable;
 }

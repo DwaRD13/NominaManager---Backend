@@ -1,6 +1,7 @@
 package com.nomina_manager.nomina_api.asiento_contable;
 
 import com.nomina_manager.asiento_contable.AsientoContable;
+import com.nomina_manager.asiento_contable.AsientoContableDTO;
 import com.nomina_manager.asiento_contable.Moneda;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,10 @@ public class AsientoContableController {
         return new ResponseEntity<>(asientoContableService.crearAsientoContable(moneda, fechaInicio, fechaFin, descripcion), HttpStatus.OK);
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AsientoContableDTO> getAsientoContableDetailsById(@PathVariable Long id) {
+        return new ResponseEntity<>(asientoContableService.getAsientoContableDetailsById(id), HttpStatus.OK);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.nomina_manager.nomina_api.asiento_contable;
 
 import com.nomina_manager.asiento_contable.AsientoContable;
+import com.nomina_manager.asiento_contable.AsientoContableDTO;
 import com.nomina_manager.asiento_contable.Moneda;
 
 import java.time.LocalDate;
@@ -11,5 +12,5 @@ public interface AsientoContableService {
     List<Moneda> getAllMoneda();
     List<AsientoContable> getAllAsientoContable();
     AsientoContable crearAsientoContable(Moneda moneda, LocalDate fechaInicio, LocalDate fechaFin, String descripcion);
-
+    AsientoContableDTO getAsientoContableDetailsById(Long id);
 }

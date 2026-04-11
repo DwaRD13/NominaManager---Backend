@@ -28,7 +28,4 @@ public class AsientoContable {
 
     @Column(name = ColumnName.ESTADO)
     private Boolean estado;
-
-    @Column(name = ColumnName.ID_ASIENTO_CONTABLE)
-    private Long idAsientoContable;
 }

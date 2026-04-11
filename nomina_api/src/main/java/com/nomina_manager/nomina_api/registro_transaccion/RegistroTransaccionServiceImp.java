@@ -149,6 +149,7 @@ public class RegistroTransaccionServiceImp implements RegistroTransaccionService
 
         BigDecimal montoCalculado = calcularMonto(dto.getMonto(), dependeDeSalario, porcentaje, entity.getEmpleado());
         entity.setMonto(montoCalculado);
+        entity.setIdAsiento(dto.getIdAsientoContable());
 
         return repository.save(entity);
     }
@@ -188,6 +189,7 @@ public class RegistroTransaccionServiceImp implements RegistroTransaccionService
         entity.setFecha(dto.getFecha());
         entity.setEstado(ESTADO_ACTIVO);
         entity.setFechaCreacion(LocalDateTime.now());
+        entity.setIdAsiento(dto.getIdAsientoContable());
 
         if (dto.getTipoDeIngresoId() != null) {
             procesarIngreso(entity, empleado, dto);
@@ -223,7 +225,6 @@ public class RegistroTransaccionServiceImp implements RegistroTransaccionService
         entity.setMonto(calcularMonto(dto.getMonto(), tipo.isDependeDeSalario(), tipo.getPorcentaje(), empleado));
     }
 
-
     private Double calcularDeduccionesYGenerarRegistros(Empleado empleado, LocalDate fecha) {
         BigDecimal salarioBruto = empleado.getSalarioMensual();
         BigDecimal totalDeduccionesAcumuladas = BigDecimal.ZERO;
@@ -249,31 +250,6 @@ public class RegistroTransaccionServiceImp implements RegistroTransaccionService
         }
 
         return salarioBruto.subtract(totalDeduccionesAcumuladas).doubleValue();
-    }
-
-    private void registrarDeduccionAutomatica(Empleado emp, String nombreDeduccion, double monto, LocalDate fecha) {
-        TiposDeducciones tipo = tiposDeduccionesRepository.buscarPorNombre(nombreDeduccion);
-
-        RegistroTransaccion deduccion = new RegistroTransaccion();
-        deduccion.setEmpleado(emp);
-        deduccion.setTipoTransaccion(tipo.getNombre());
-        deduccion.setTipoDeDeduccion(tipo);
-        deduccion.setMonto(BigDecimal.valueOf(monto));
-        deduccion.setFecha(fecha);
-        deduccion.setEstado(ESTADO_ACTIVO);
-        deduccion.setFechaCreacion(LocalDateTime.now());
-
-        repository.save(deduccion);
-    }
-
-    private double calcularARS(double salarioBruto){
-        double baseCalculoARS = Math.min(salarioBruto, TOPE_ARS);
-        return baseCalculoARS * PORCENTAJE_ARS;
-    }
-
-    private double calcularAFP(double salarioBruto){
-        double baseCalculoAFP = Math.min(salarioBruto, TOPE_AFP);
-        return baseCalculoAFP * PORCENTAJE_AFP;
     }
 
     private void validarDTO(RegistroTransaccionDTO dto) {
