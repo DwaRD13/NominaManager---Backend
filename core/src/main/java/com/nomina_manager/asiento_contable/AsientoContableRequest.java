@@ -14,6 +14,7 @@ public class AsientoContableRequest {
     private Boolean estado;
     private Double tasaCambio;
     private Double montoTotalCambio;
+    private Double montoTotalDop;
 
     private Auxiliar auxiliar;
     private List<CuentaContable> detalles;

@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import java.util.List;
@@ -56,24 +58,24 @@ public class AsientoContableServiceImp implements AsientoContableService {
         List<Cuenta> todasLasCuentas = fetchCuentasDesdeApi();
         List<RegistroTransaccion> transacciones = obtenerTransaccionesPendientes(fechaInicio, fechaFin);
 
-        double montoRetenciones = transacciones.stream()
+        BigDecimal montoRetencionesDop = transacciones.stream()
                 .filter(t -> Objects.nonNull(t.getTipoDeDeduccion()))
-                .mapToDouble(t -> t.getMonto().doubleValue())
-                .sum();
+                .map(t -> t.getMonto() != null ? t.getMonto() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        double montoNeto = transacciones.stream()
+        BigDecimal montoNetoDop = transacciones.stream()
                 .filter(t -> Objects.isNull(t.getTipoDeDeduccion()))
-                .mapToDouble(t -> t.getMonto().doubleValue())
-                .sum();
+                .map(t -> t.getMonto() != null ? t.getMonto() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        double montoGastoBruto = montoNeto + montoRetenciones;
+        BigDecimal montoGastoBrutoDop = montoNetoDop.add(montoRetencionesDop);
 
-        AsientoContableRequest request = prepararRequest(moneda, descripcion, montoGastoBruto,
-                montoNeto, montoRetenciones, todasLasCuentas);
+        AsientoContableRequest request = prepararRequest(moneda, descripcion, montoGastoBrutoDop,
+                montoNetoDop, montoRetencionesDop, todasLasCuentas);
 
-        AsientoContableRequest respuestaApi = enviarAsientoAApi(request);
+        enviarAsientoAApi(request);
 
-        AsientoContable asientoLocal = mapearParaEntidadYGuardar(request);
+        AsientoContable asientoLocal = mapearParaEntidadYGuardar(request, fechaInicio, fechaFin);
         vincularTransaccionesConAsiento(transacciones, asientoLocal.getId());
 
         return asientoLocal;
@@ -93,7 +95,11 @@ public class AsientoContableServiceImp implements AsientoContableService {
         asientoContableDTO.setEstado(asientoContable.getEstado());
         asientoContableDTO.setFechaAsiento(asientoContable.getFechaAsiento());
         asientoContableDTO.setDescripcion(asientoContable.getDescripcion());
-        asientoContableDTO.setMontoTotal(asientoContable.getMontoTotal());
+        asientoContableDTO.setMontoTotalDop(asientoContable.getMontoTotalDop());
+        asientoContableDTO.setMoneda(asientoContable.getMoneda());
+        asientoContableDTO.setMontoTotalTransaccion(asientoContable.getMontoTotalTransaccion());
+        asientoContableDTO.setFechaInicio(asientoContable.getFechaInicio());
+        asientoContableDTO.setFechaFin(asientoContable.getFechaFin());
 
         List<RegistroTransaccion> registroTransaccions = registroTransaccionRepository.encontrarPorIdAsiento(id);
 
@@ -104,7 +110,6 @@ public class AsientoContableServiceImp implements AsientoContableService {
         asientoContableDTO.setRegistroTransaccion(registroTransaccions);
         return asientoContableDTO;
     }
-
 
     private List<Cuenta> fetchCuentasDesdeApi() {
         List<Cuenta> cuentas = this.webClient.get().uri("api/cuentas-contables")
@@ -129,13 +134,28 @@ public class AsientoContableServiceImp implements AsientoContableService {
         return transacciones;
     }
 
-    private AsientoContableRequest prepararRequest(Moneda moneda, String desc, double bruto,
-                                                   double neto, double retenciones, List<Cuenta> cuentas) {
+    private AsientoContableRequest prepararRequest(Moneda moneda, String desc, BigDecimal brutoDop,
+                                                   BigDecimal netoDop, BigDecimal retencionesDop, List<Cuenta> cuentas) {
+
+        BigDecimal tasa = (moneda.getTasaCambio() != null && moneda.getTasaCambio() > 0)
+                ? BigDecimal.valueOf(moneda.getTasaCambio())
+                : BigDecimal.ONE;
+
         AsientoContableRequest request = new AsientoContableRequest();
         request.setMoneda(moneda);
+        request.setTasaCambio(tasa.doubleValue());
+        request.setMontoTotalDop(brutoDop.doubleValue());
+
+        BigDecimal brutoConvertido = brutoDop.divide(tasa, 2, RoundingMode.HALF_UP);
+        BigDecimal retencionesConvertidas = retencionesDop.divide(tasa, 2, RoundingMode.HALF_UP);
+        BigDecimal netoConvertido = brutoConvertido.subtract(retencionesConvertidas);
+
         request.setDescripcion(desc);
         request.setFechaAsiento(LocalDate.now());
-        request.setMontoTotal(bruto);
+
+        request.setMontoTotal(brutoConvertido.doubleValue());
+        request.setMontoTotalCambio(brutoConvertido.doubleValue());
+
         request.setEstado(true);
 
         Auxiliar aux = new Auxiliar();
@@ -143,17 +163,18 @@ public class AsientoContableServiceImp implements AsientoContableService {
         request.setAuxiliar(aux);
 
         List<CuentaContable> detalles = List.of(
-                crearDetalle(bruto, "Debito", mapearCuentaPorCodigo(cuentas, "2101-02")), // Gasto
-                crearDetalle(neto, "Credito", mapearCuentaPorCodigo(cuentas, "2101-01")),  // Salarios
-                crearDetalle(retenciones, "Credito", mapearCuentaPorCodigo(cuentas, "2101-03")) // Retenciones
+                crearDetalle(brutoConvertido, "Debito", mapearCuentaPorCodigo(cuentas, "2101-02")),
+                crearDetalle(netoConvertido, "Credito", mapearCuentaPorCodigo(cuentas, "2101-01")),
+                crearDetalle(retencionesConvertidas, "Credito", mapearCuentaPorCodigo(cuentas, "2101-03"))
         );
+
         request.setDetalles(detalles);
         return request;
     }
 
-    private CuentaContable crearDetalle(double monto, String tipo, Cuenta cuenta) {
+    private CuentaContable crearDetalle(BigDecimal monto, String tipo, Cuenta cuenta) {
         CuentaContable detalle = new CuentaContable();
-        detalle.setMonto(monto);
+        detalle.setMonto(monto.doubleValue());
         detalle.setTipoMovimiento(tipo);
         detalle.setCuenta(cuenta);
         return detalle;
@@ -186,13 +207,18 @@ public class AsientoContableServiceImp implements AsientoContableService {
                 orElse(null);
     }
 
-    public AsientoContable mapearParaEntidadYGuardar(AsientoContableRequest asientoContableRequest){
+    public AsientoContable mapearParaEntidadYGuardar(AsientoContableRequest asientoContableRequest,
+                                                     LocalDate fechaInicio,
+                                                     LocalDate fechaFin) {
         AsientoContable asientoContable = new AsientoContable();
         asientoContable.setDescripcion(asientoContableRequest.getDescripcion());
         asientoContable.setFechaAsiento(LocalDate.now());
-        asientoContable.setMontoTotal(asientoContableRequest.getMontoTotal());
+        asientoContable.setMoneda(asientoContableRequest.getMoneda().getCodigoIso() + asientoContableRequest.getMoneda().getSimbolo());
+        asientoContable.setMontoTotalDop(asientoContableRequest.getMontoTotalDop());
         asientoContable.setEstado(asientoContableRequest.getEstado());
-
+        asientoContable.setMontoTotalTransaccion(asientoContableRequest.getMontoTotal());
+        asientoContable.setFechaInicio(fechaInicio);
+        asientoContable.setFechaFin(fechaFin);
         repository.saveAndFlush(asientoContable);
         return asientoContable;
     }
