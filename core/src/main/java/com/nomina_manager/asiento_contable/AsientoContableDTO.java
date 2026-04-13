@@ -15,6 +15,7 @@ public class AsientoContableDTO {
     private Boolean estado;
     private String moneda;
     private Double montoTotalTransaccion;
+    private Long idContabilidad;
 
     private LocalDate fechaInicio;
     private LocalDate fechaFin;

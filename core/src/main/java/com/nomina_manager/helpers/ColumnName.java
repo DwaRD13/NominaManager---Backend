@@ -21,6 +21,7 @@ public class ColumnName {
     public final static String MONEDA = "moneda";
     public final static String FECHA_INICIO = "fecha_inicio";
     public final static String FECHA_FIN= "fecha_fin";
+    public final static String ID_CONTABILIDAD = "id_contabilidad";
 
     // Tabla registro_transaccion
     public final static String EMPLEADO_ID = "empleado_id";
