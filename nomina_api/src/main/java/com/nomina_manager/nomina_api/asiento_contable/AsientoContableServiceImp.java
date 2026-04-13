@@ -45,7 +45,7 @@ public class AsientoContableServiceImp implements AsientoContableService {
     @Override
     public List<AsientoContable> getAllAsientoContable() {
         List<AsientoContable> asientoContables = repository.encontrarTodasAsientoContable();
-        System.out.println(asientoContables);
+
         if(asientoContables.isEmpty()){
             throw new DoNotExistException("No se encontraron asientos contables activos");
         }
