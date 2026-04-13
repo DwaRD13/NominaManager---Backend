@@ -36,7 +36,6 @@ public class AsientoContableController {
         return new ResponseEntity<>(asientoContableService.crearAsientoContable(moneda, fechaInicio, fechaFin, descripcion), HttpStatus.OK);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<AsientoContableDTO> getAsientoContableDetailsById(@PathVariable Long id) {
         return new ResponseEntity<>(asientoContableService.getAsientoContableDetailsById(id), HttpStatus.OK);
