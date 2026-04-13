@@ -41,4 +41,6 @@ public class AsientoContable {
     @Column(name = ColumnName.FECHA_FIN)
     private LocalDate fechaFin;
 
+    @Column(name = ColumnName.ID_CONTABILIDAD)
+    private Long idContabilidad;
 }
