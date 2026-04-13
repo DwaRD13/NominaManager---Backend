@@ -73,9 +73,9 @@ public class AsientoContableServiceImp implements AsientoContableService {
         AsientoContableRequest request = prepararRequest(moneda, descripcion, montoGastoBrutoDop,
                 montoNetoDop, montoRetencionesDop, todasLasCuentas);
 
-        enviarAsientoAApi(request);
+        AsientoContableRequest asientoContableRequest = enviarAsientoAApi(request);
 
-        AsientoContable asientoLocal = mapearParaEntidadYGuardar(request, fechaInicio, fechaFin);
+        AsientoContable asientoLocal = mapearParaEntidadYGuardar(request, fechaInicio, fechaFin, asientoContableRequest.getId());
         vincularTransaccionesConAsiento(transacciones, asientoLocal.getId());
 
         return asientoLocal;
@@ -100,6 +100,7 @@ public class AsientoContableServiceImp implements AsientoContableService {
         asientoContableDTO.setMontoTotalTransaccion(asientoContable.getMontoTotalTransaccion());
         asientoContableDTO.setFechaInicio(asientoContable.getFechaInicio());
         asientoContableDTO.setFechaFin(asientoContable.getFechaFin());
+        asientoContableDTO.setIdContabilidad(asientoContable.getIdContabilidad());
 
         List<RegistroTransaccion> registroTransaccions = registroTransaccionRepository.encontrarPorIdAsiento(id);
 
@@ -209,7 +210,8 @@ public class AsientoContableServiceImp implements AsientoContableService {
 
     public AsientoContable mapearParaEntidadYGuardar(AsientoContableRequest asientoContableRequest,
                                                      LocalDate fechaInicio,
-                                                     LocalDate fechaFin) {
+                                                     LocalDate fechaFin,
+                                                     Long asientoContableId) {
         AsientoContable asientoContable = new AsientoContable();
         asientoContable.setDescripcion(asientoContableRequest.getDescripcion());
         asientoContable.setFechaAsiento(LocalDate.now());
@@ -219,6 +221,7 @@ public class AsientoContableServiceImp implements AsientoContableService {
         asientoContable.setMontoTotalTransaccion(asientoContableRequest.getMontoTotal());
         asientoContable.setFechaInicio(fechaInicio);
         asientoContable.setFechaFin(fechaFin);
+        asientoContable.setIdContabilidad(asientoContableId);
         repository.saveAndFlush(asientoContable);
         return asientoContable;
     }
