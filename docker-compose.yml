@@ -1,26 +1,4 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver_db
-    restart: always
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=TuPasswordFuerte2026!
-      - MSSQL_PID=Express
-      - MSSQL_MEMORY_LIMIT_MB=1500
-    ports:
-      - "1433:1433"
-    volumes:
-      - sql_data:/var/opt/mssql
-    healthcheck:
-      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "TuPasswordSeguro123!", "-Q", "SELECT 1" ]
-      interval: 10s
-    deploy:
-      resources:
-        limits:
-          memory: 3048M
-
-
   backend:
     build: .
     container_name: spring_backend
@@ -32,9 +10,3 @@ services:
       SPRING_DATASOURCE_USERNAME: "sa"
       SPRING_DATASOURCE_PASSWORD: "TuPasswordFuerte2026!"
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-    depends_on:
-      sqlserver:
-        condition: service_healthy
-
-volumes:
-  sql_data:
