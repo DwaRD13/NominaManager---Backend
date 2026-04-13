@@ -52,3 +52,4 @@ public class RegistroTransaccion {
     @Column(name = ColumnName.ID_ASIENTO)
     private Long idAsiento;
 }
+
