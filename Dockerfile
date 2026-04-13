@@ -6,5 +6,5 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/nomina_api/target/*.jar app.jar
-
+EXPOSE 8080
 ENTRYPOINT ["java", "-Xmx1048M", "-jar", "app.jar"]
