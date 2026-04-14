@@ -5,8 +5,10 @@ import com.nomina_manager.exception.DoNotExistException;
 import com.nomina_manager.nomina_api.registro_transaccion.RegistroTransaccionRepository;
 import com.nomina_manager.registro_transaccion.RegistroTransaccion;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -130,7 +132,7 @@ public class AsientoContableServiceImp implements AsientoContableService {
                 .consultarTransaccionesPorFechaSinAsientoContable(inicio, fin);
 
         if (transacciones.isEmpty()) {
-            throw new RuntimeException("No se han encontrado transacciones para registrar");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No se han encontrado transacciones para registrar");
         }
         return transacciones;
     }
@@ -190,7 +192,7 @@ public class AsientoContableServiceImp implements AsientoContableService {
                 .block();
 
         if (response == null) {
-            throw new RuntimeException("La API externa no devolvió una respuesta válida");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La API externa no devolvió una respuesta válida");
         }
         return response;
     }
