@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/asiento_contable")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class AsientoContableController {
 
     private AsientoContableService asientoContableService;

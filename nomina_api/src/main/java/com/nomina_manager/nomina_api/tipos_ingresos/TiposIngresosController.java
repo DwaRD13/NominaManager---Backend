@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/tipos-ingresos")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class TiposIngresosController {
     public TiposIngresosService service;
 
