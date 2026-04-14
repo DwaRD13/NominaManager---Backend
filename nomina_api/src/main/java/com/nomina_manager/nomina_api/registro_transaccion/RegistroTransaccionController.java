@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/registros-transaccion")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class RegistroTransaccionController {
 
     private final RegistroTransaccionService service;

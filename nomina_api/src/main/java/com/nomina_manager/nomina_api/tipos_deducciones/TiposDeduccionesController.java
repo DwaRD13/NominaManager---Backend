@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/tipos-deducciones")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class TiposDeduccionesController {
     private final TiposDeduccionesService service;
 
